@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import AddNew from './components/addnew/addnew_contact';
-import ContactList from './components/contactList/contactList';
+import Home from './components/home/home';
 import Header from './components/header/header';
 import { v4 as uuidv4 } from 'uuid';
+import { Route, Routes } from 'react-router-dom';
+import EditContact from './components/edit/editContact';
 
 function App() {
   const [maleCount,setMaleCount]=useState(0);
@@ -28,19 +30,18 @@ function App() {
     },
   ]);
   useEffect(()=>{
-    console.log("useeffect")
     let maleCount=0;
     let femaleCount=0;
     let presonalCount=0;
     let bussinessCount=0;
     contacts.map((contact)=>{
-      console.log(contact.gender)
       if(contact.gender==="male")
         maleCount++;
       else
         femaleCount++
 
       contact.type==="personal"?presonalCount++:bussinessCount++;
+      return contact;
     })
     setMaleCount(maleCount);
     setFemaleCount(femaleCount);
@@ -55,7 +56,14 @@ function App() {
 
   const addContact=(newContact)=>{
     setContacts([...contacts,{id:uuidv4(),...newContact}]);
-    console.log(contacts)
+
+  }
+
+  const editContact=(newContact)=>{
+    const newcontactList=contacts.filter((contact)=>{
+      return contact.id !== newContact.id;
+    });
+    setContacts([...newcontactList,newContact]);
 
   }
 
@@ -68,28 +76,20 @@ function App() {
 
 
   return (
-    <div className="container">
-      <Header />
-      <div className='border rounded p-3'>
-        <div className='row'>
-          <div className='col-6'>
-            <p className='text-center'><span className='fw-bold'>Male:</span>{maleCount}</p>
-            <p className='text-center'><span className='fw-bold'>Female:</span>{femaleCount}</p>
-          </div>
-          <div className='col-6'>
-            <p className='text-center'><span className='fw-bold'>Personal:</span>{presonalCount}</p>
-            <p className='text-center'><span className='fw-bold'>Business:</span>{bussinessCount}</p>
-          </div>
-        </div>
-        
-        
+    <>
+      <div className="container">
+        <Header />
+        <Routes>
+          <Route path='/' index element={<Home deleteContactHandler={deleteContactHandler} maleCount={maleCount} femaleCount={femaleCount} presonalCount={presonalCount} bussinessCount={bussinessCount} contacts={contacts} />} />
+          <Route path='/addnew' element={<AddNew addContact={addContact}/>} />
+          <Route path='/edit/:id' element={<EditContact editContact={editContact} contacts={contacts} />} />
+        </Routes>
       </div>
-
-      <AddNew addContact={addContact}/>
-      <ContactList contacts={contacts} deleteContactHandler={deleteContactHandler}/>
       
 
-    </div>
+    </>
+    
+    
   );
 }
 

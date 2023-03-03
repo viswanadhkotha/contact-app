@@ -1,8 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ContactCard from "../contact card/contactCard";
 
 const ContactList = ({contacts, deleteContactHandler}) =>{
-    console.log(contacts)
     
     const deletecontact= (id) =>{
         deleteContactHandler(id);
@@ -18,7 +18,7 @@ const ContactList = ({contacts, deleteContactHandler}) =>{
 
     return (
         <div>
-            <div className="h3">Contact List</div>
+            <Link className="btn btn-success" to="/addnew">Add New Contact</Link>
             <div>{renderContacts}</div>
         </div>
 

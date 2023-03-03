@@ -1,28 +1,18 @@
 import {React, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
 const AddNew = ({addContact}) =>{
-  // const submit = () =>{
-    // document.getElementById('newContactModal').modal('toggle');
-    // Modal.Events.hide();
-    // $('#newContactModal').modal('toggle');
-    // const modalToggle = document.getElementById('newContactModal'); 
-    // Modal.hide();
-
-  
-
-    // $("#newContactModal .close").on();
-  // }
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('male');
   const [type, setType] = useState('bussiness');
   const submit=(e)=>{
     e.preventDefault();
-    console.log(name);
-    console.log(email);
     addContact({name:name,email:email,gender:gender,type:type})
+    navigate("/")
   }
   
 
